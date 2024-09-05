@@ -40,7 +40,7 @@ export default function Home() {
       <div className="flex items-center justify-center p-10">
         <div className="flex flex-wrap flex-col lg:flex-row items-center gap-5">
           {recipes?.map((recipe) => (
-            <Card recipe={recipe} />
+            <Card key={recipe.idMeal} recipe={recipe} />
           ))}
         </div>
       </div>
