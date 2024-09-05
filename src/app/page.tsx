@@ -9,6 +9,7 @@ import Card from './components/Card';
 export default function Home() {
   const [recipes, setRecipes] = useState<Meal[]>([]);
   const [search, setSearch] = useState('');
+  const [name, setName] = useState('Chicken');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -16,7 +17,7 @@ export default function Home() {
     const fetchRecipes = async () => {
       try {
         const res = await fetch(
-          'https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood'
+          `https://www.themealdb.com/api/json/v1/1/filter.php?c=${name}`
         );
 
         if (!res.ok) {
@@ -31,18 +32,24 @@ export default function Home() {
     };
 
     fetchRecipes();
-  }, []);
+  }, [name]);
 
   return (
     <div>
       <Header />;
-      <Search />
+      <Search setName={setName} setRecipes={setRecipes} />
       <div className="flex items-center justify-center p-10">
-        <div className="flex flex-wrap flex-col lg:flex-row items-center gap-5">
-          {recipes?.map((recipe) => (
-            <Card key={recipe.idMeal} recipe={recipe} />
-          ))}
-        </div>
+        {loading ? (
+          <>
+            <h1 className="text-center text-3xl">Loading...</h1>
+          </>
+        ) : (
+          <div className="flex flex-wrap flex-col lg:flex-row items-center gap-5">
+            {recipes?.map((recipe) => (
+              <Card key={recipe.idMeal} recipe={recipe} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
